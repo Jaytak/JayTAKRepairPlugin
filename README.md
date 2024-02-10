@@ -1,6 +1,6 @@
 # JayTAK Repair Plugin
 
-Version 1.0.0
+Version 1.1.0
 
 
 Only tested on paper 1.20.4 build 407 - 409
@@ -46,3 +46,6 @@ V0.0.1-ALPHA - V0.0.20-ALPHA - Getting the plugin to function.<br>
 V0.0.21-ALPHA - V0.0.28-BETA - Removing essentials as a dependency.<br>
 V0.0.29-BETA - Added Permission Node For Command.<br>
 V1.0.0 - Minor bug fix, cleaned up the code a bit.<br>
+V1.0.1 - Update README.MD
+V1.1.0 - Added bStats
+ 
