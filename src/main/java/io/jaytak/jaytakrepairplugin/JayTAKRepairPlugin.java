@@ -1,6 +1,5 @@
 package io.jaytak.jaytakrepairplugin;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class JayTAKRepairPlugin extends JavaPlugin {
@@ -8,10 +7,6 @@ public final class JayTAKRepairPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-
-        // Load bStats
-        int pluginId = 20963;
-        Metrics metrics = new Metrics(this, pluginId);
 
         super.onEnable();
         getCommand("jaytakrepair").setExecutor(new Repair());
