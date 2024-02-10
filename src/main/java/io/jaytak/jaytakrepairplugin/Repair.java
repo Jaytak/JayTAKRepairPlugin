@@ -10,22 +10,33 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 
 import static org.bukkit.Bukkit.getLogger;
+import static org.bukkit.Bukkit.getPlayer;
 
 public class Repair implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        getLogger().info("[JayTAK Repair] " + sender.getName() + " issued the command " + command.getName());
-        // Check if the command sender is a player
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("[JayTAK Repair] Only players can use this command!");
-            return false;
-        }
         Player player = (Player) sender;
         String username = player.getName();
-        // Check if the player has the item in their hand
+
+        // Check if the command sender is a player
+        if (!(sender instanceof Player)) {
+            player.sendMessage("[JayTAK Repair] Only players can use this command!");
+            getLogger().info("[JayTAK Repair] Only players can use this command!");
+            return false;
+        }
+        // Check player has permission to use the command.
+        getLogger().info("[JayTAK Repair] " + sender.getName() + " issued the command " + command.getName());
+        if (!player.hasPermission("jaytakrepairplugin.repair")){
+            getLogger().info("[JayTAK Repair} " + sender.getName() + " doesnt have permission to run this command.");
+            player.sendMessage("[JayTAK Repair] You dont have permission to run this command.");
+            return false;
+        }
+
+
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        // Check if the item is not air (an actual item is held)
+
         try {
+            // Check if the item is not air (an actual item is held)
             if (itemInHand.getType() != Material.AIR) {
                 getLogger().info("[JayTAK Repair] User Holding: " + itemInHand.getType());
                 String item = itemInHand.getType().toString();

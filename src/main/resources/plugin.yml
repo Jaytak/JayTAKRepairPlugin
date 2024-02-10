@@ -10,3 +10,4 @@ commands:
       - jrep
       - jr
     usage: /jaytakrepair /jrepair /jrep /jr
+    permission: jaytakrepairplugin.repair
