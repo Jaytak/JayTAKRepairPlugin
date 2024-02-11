@@ -1,6 +1,6 @@
 # JayTAK Repair Plugin
 
-Version 1.2.1
+Version 1.2.3
 
 Only tested on paper 1.20.4 build 407, 409, 422
 
@@ -25,6 +25,8 @@ Grants the player access to the command.
 #### Items & Materials:
 The following list of item use the associated material for repair.
 ```
+Any item that starts with LEATHER:
+LEATHER
 
 Fishing Rod, Bow, CrossBow and any item that starts with WOODEN:
 OAK_PLANKS
@@ -32,8 +34,11 @@ OAK_PLANKS
 Any item starting with STONE:
 COBBLESTONE
 
-Shield and any item that starts with IRON:
+Shield, Chipped Anvil and any item that starts with IRON:
 IRON_INGOT
+
+Damaged Anvil:
+IRON_BLOCK
 
 Any item starting with GOLD:
 GOLD_INGOT
@@ -46,6 +51,16 @@ NETHERITE_INGOT
 ```
 
 ##### Changelog:<br>
+V1.2.4
+- Fixed bStats, hopefully.... 
+
+V1.2.3
+- Added Leather items.
+- More robust exception handling.
+
+V1.2.2
+- Added Chipped Anvils.
+- Implemented command check for future potential commands.
 
 V1.2.1
 - Removed duplicate console logs.
