@@ -1,6 +1,6 @@
 # JayTAK Repair Plugin
 
-Version 1.2.3
+Version 1.2.4
 
 Only tested on paper 1.20.4 build 407, 409, 422
 
