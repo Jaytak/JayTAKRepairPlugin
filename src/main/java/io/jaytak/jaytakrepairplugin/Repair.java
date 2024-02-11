@@ -7,23 +7,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import static org.bukkit.Bukkit.getLogger;
-import static org.bukkit.Bukkit.getPlayer;
+
 
 public class Repair implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command, @NonNull String label, @Nullable String[] args) {
+        // Check if the command sender is a player
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("[JayTAK Repair] Only players can use this command!");
+            return false; // Command did not execute successfully.
+        }
+
         Player player = (Player) sender;
         String username = player.getName();
 
-        // Check if the command sender is a player
-        if (!(sender instanceof Player)) {
-            player.sendMessage("[JayTAK Repair] Only players can use this command!");
-            getLogger().info("[JayTAK Repair] Only players can use this command!");
-            return false; // Command did not execute successfully.
-        }
         // Check player has permission to use the command.
         getLogger().info("[JayTAK Repair] " + sender.getName() + " issued the command " + command.getName());
         if (!player.hasPermission("jaytakrepairplugin.repair")){
@@ -47,11 +48,13 @@ public class Repair implements CommandExecutor {
                         // Remove one item of the material from the player's inventory
                         player.getInventory().removeItem(new ItemStack(Material.IRON_BLOCK, 1));
                         // Repair Item.
-                        player.setItemInHand(new ItemStack(Material.ANVIL, 1));
+                        //player.setItemInHand(new ItemStack(Material.ANVIL, 1));
+                        player.getInventory().setItemInMainHand(new ItemStack(Material.ANVIL, 1));
+
                         player.sendMessage("[JayTAK Repair] Item repaired using one Iron Block.");
                         getLogger().info("[JayTAK Repair] Item repaired using one Iron Block.");
                         // Update players inventory.
-                        player.updateInventory();
+                        //player.updateInventory();
                         return true;  // Command executed successfully.
                     }
                     else {
@@ -196,7 +199,7 @@ public class Repair implements CommandExecutor {
                         }
 
                         // Update players inventory.
-                        player.updateInventory();
+                        //player.updateInventory();
                     }
                     // Item does not have any damage.
                     else{

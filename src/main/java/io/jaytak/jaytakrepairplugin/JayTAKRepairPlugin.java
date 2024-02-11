@@ -2,6 +2,8 @@ package io.jaytak.jaytakrepairplugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+
 public final class JayTAKRepairPlugin extends JavaPlugin {
 
     @Override
@@ -9,7 +11,7 @@ public final class JayTAKRepairPlugin extends JavaPlugin {
         // Plugin startup logic
 
         super.onEnable();
-        getCommand("jaytakrepair").setExecutor(new Repair());
+        Objects.requireNonNull(getCommand("jaytakrepair")).setExecutor(new Repair());
         this.getLogger().info("JayTAK Repair Plugin Loaded");
     }
 
