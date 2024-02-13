@@ -49,6 +49,8 @@ public class Repair implements CommandExecutor {
 
                         // Non damageable items, like anvils:
                         if (item.equals("DAMAGED_ANVIL")){
+                            //ItemStack item = Material.IRON_BLOCK;
+                            //if (player.getInventory().contains((item)))
                             if (player.getInventory().contains(Material.IRON_BLOCK)) {
                                 // Remove one item of the material from the player's inventory
                                 player.getInventory().removeItem(new ItemStack(Material.IRON_BLOCK, 1));
