@@ -2,7 +2,7 @@
 
 Version 1.2.4
 
-Simple minecraft server repair plugin that allows players to repair the item they are holding in their hands for the price of one of the base material the item is made from.
+Simple Minecraft server repair plugin that allows players to repair the item they are holding in their hands for the price of one of the base material the item is made from.
 
 >[!NOTE]
 > As a full-time student, I cannot provide support for this plugin. I am only sharing this to GitHub in case someone else out there finds it useful.<br>
@@ -26,7 +26,7 @@ jaytakrepairplugin.repair
 Grants the player access to the command.
 
 #### Items & Materials:
-The following list of item use the associated material for repair.
+The following list of items uses the associated material for repair.
 ```
 Any item that starts with LEATHER:
 LEATHER
