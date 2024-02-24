@@ -16,7 +16,7 @@ public class Repair implements CommandExecutor {
     public boolean onCommand(@NonNull CommandSender sender,
                              @NonNull Command command,
                              @NonNull String label,
-                             @NonNull String[] args) {
+                             @SuppressWarnings("NullableProblems") String[] args) {
         try{
             // Check command jaytakrepair was run. This enables the possibility for future commands.
             if (command.getName().equals("jaytakrepair")) {
