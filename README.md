@@ -57,3 +57,4 @@ NETHERITE_INGOT
 > This plugin has only been tested on 1.20.4 Paper builds 407, 409, 422, 423, 434<br>
 > I am unable to guarantee this plugin will work on any other Minecraft server builds.
 
+I'll get around to implementing DRY. For now it works, ship it.
