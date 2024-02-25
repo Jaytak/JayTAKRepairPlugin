@@ -57,7 +57,11 @@ NETHERITE_INGOT
 > This plugin has only been tested on 1.20.4 Paper builds 407, 409, 422, 423, 434<br>
 > I am unable to guarantee this plugin will work on any other Minecraft server builds.
 
-### bStats
+
+##### Artwork
+Plugin icon made by InferiusFurious
+
+### stats
 
 ![Plugin bStats](https://bstats.org/signatures/bukkit/JayTAK%20Repair%20Plugin.svg)
 
