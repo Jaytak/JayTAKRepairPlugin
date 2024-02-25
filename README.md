@@ -61,7 +61,7 @@ NETHERITE_INGOT
 ##### Artwork
 Plugin icon made by InferiusFurious
 
-### stats
+### bStats
 
 ![Plugin bStats](https://bstats.org/signatures/bukkit/JayTAK%20Repair%20Plugin.svg)
 
