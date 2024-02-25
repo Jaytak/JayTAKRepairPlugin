@@ -59,9 +59,6 @@ NETHERITE_INGOT
 > I am unable to guarantee this plugin will work on any other Minecraft server builds.
 
 
-##### Artwork
-Plugin icon made by InferiusFurious
-
 ### bStats
 
 ![Plugin bStats](https://bstats.org/signatures/bukkit/JayTAK%20Repair%20Plugin.svg)
