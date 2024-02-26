@@ -1,7 +1,7 @@
 # JayTAK Repair Plugin
 <img src="https://cdn.modrinth.com/data/KNFBnUnH/66c81bb00e229dbfd771601b53e5f29bfc12f7b7.png" width="150">
 
-Version 1.2.6 (for paper 1.20.4)
+Version 1.2.7 (for paper 1.20.4)
 <br><br>
 Simple Minecraft server repair plugin that allows players to repair the item they are holding in their hands for the price of one of the base material the item is made from.
 
