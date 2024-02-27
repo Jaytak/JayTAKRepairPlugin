@@ -5,6 +5,8 @@ Version 1.2.7 (for paper 1.20.4)
 <br><br>
 Simple Minecraft server repair plugin that allows players to repair the item they are holding in their hands for the price of one of the base material the item is made from.
 
+Download from [Modrinth](https://modrinth.com/plugin/jaytak-repair)
+
 >[!NOTE]
 > As a full-time student, I cannot provide support for this plugin. I am only sharing this to GitHub in case someone else out there finds it useful. I will do my best to keep it up to date with the latest paper builds where possible.<br>
 >Feel free to submit bugs and feature requests, but there is no guarantee I ever get around to fixing/implementing them.
