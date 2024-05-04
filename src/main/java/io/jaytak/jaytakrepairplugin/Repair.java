@@ -36,6 +36,7 @@ public class Repair implements CommandExecutor {
                         repairMaterials.put(key, new RepairMaterial(material, amount));
                     } catch (IllegalArgumentException e) {
                         plugin.getLogger().warning("[JayTAK Repair] config.yml error! Invalid material specified for key: " + key);
+                        plugin.getLogger().info("[JayTAK Repair] will attempt to continue to load the remaining configuration.");
                     }
                 }
             }
