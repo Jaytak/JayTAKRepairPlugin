@@ -1,5 +1,5 @@
 # JayTAK Repair Plugin
-<img src="https://cdn.modrinth.com/data/KNFBnUnH/66c81bb00e229dbfd771601b53e5f29bfc12f7b7.png" width="150">
+<img src="https://cdn.modrinth.com/data/KNFBnUnH/66c81bb00e229dbfd771601b53e5f29bfc12f7b7.png" alt="plugin icon" width="150">
 
 Version 2.0.3 (for paper 1.20.4)
 
@@ -31,8 +31,9 @@ jaytakrepairplugin.repair
 Grants the player access to the command.
 
 #### Items & Materials:
+You can alter the default repair items and amounts in the config.yml:
 <details>
-    <summary>Default config.yml</summary>
+    <summary>Default config.yml (Spoiler)</summary>
 
     # JayTAK Repair Configuration File.
     repairMaterials:
