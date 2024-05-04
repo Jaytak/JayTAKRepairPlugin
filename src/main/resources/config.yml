@@ -1,0 +1,202 @@
+# JayTAK Repair Configuration File.
+
+repairMaterials:
+  # Anvils:
+  DAMAGED_ANVIL:
+    material: IRON_BLOCK
+    amount: 1
+  CHIPPED_ANVIL:
+    material: IRON_INGOT
+    amount: 1
+
+  # Leather Items:
+  LEATHER_CAP:
+    material: LEATHER
+    amount: 1
+  LEATHER_TUNIC:
+    material: LEATHER
+    amount: 1
+  LEATHER_PANTS:
+    material: LEATHER
+    amount: 1
+  LEATHER_BOOTS:
+    material: LEATHER
+    amount: 1
+  LEATHER_HORSE_ARMOUR:
+    material: LEATHER
+    amount: 3
+
+  # Chainmail Items:
+  CHAINMAIL_HELMET:
+    material: IRON_INGOT
+    amount: 4
+  CHAINMAIL_CHESTPLATE:
+    material: IRON_INGOT
+    amount: 4
+  CHAINMAIL_LEGGINGS:
+    material: IRON_INGOT
+    amount: 4
+  CHAINMAIL_BOOTS:
+    material: IRON_INGOT
+    amount: 4
+
+  # Iron Items:
+  IRON_HELMET:
+    material: IRON_INGOT
+    amount: 1
+  IRON_CHESTPLATE:
+    material: IRON_INGOT
+    amount: 1
+  IRON_LEGGINGS:
+    material: IRON_INGOT
+    amount: 1
+  IRON_BOOTS:
+    material: IRON_INGOT
+    amount: 1
+  IRON_HORSE_ARMOUR:
+    material: IRON_INGOT
+    amount: 3
+  IRON_PICKAXE:
+    material: IRON_INGOT
+    amount: 1
+  IRON_AXE:
+    material: IRON_INGOT
+    amount: 1
+  IRON_SHOVEL:
+    material: IRON_INGOT
+    amount: 1
+  IRON_SWORD:
+    material: IRON_INGOT
+    amount: 1
+  IRON_HOE:
+    material: IRON_INGOT
+    amount: 1
+
+  # Gold Items:
+  GOLD_HELMET:
+    material: GOLD_INGOT
+    amount: 1
+  GOLD_CHESTPLATE:
+    material: GOLD_INGOT
+    amount: 1
+  GOLD_LEGGINGS:
+    material: GOLD_INGOT
+    amount: 1
+  GOLD_BOOTS:
+    material: GOLD_INGOT
+    amount: 1
+  GOLD_HORSE_ARMOUR:
+    material: GOLD_INGOT
+    amount: 3
+  GOLD_PICKAXE:
+    material: GOLD_INGOT
+    amount: 1
+  GOLD_AXE:
+    material: GOLD_INGOT
+    amount: 1
+  GOLD_SHOVEL:
+    material: GOLD_INGOT
+    amount: 1
+  GOLD_SWORD:
+    material: GOLD_INGOT
+    amount: 1
+  GOLD_HOE:
+    material: GOLD_INGOT
+    amount: 1
+
+  # Diamond Items:
+  DIAMOND_HELMET:
+    material: DIAMOND
+    amount: 1
+  DIAMOND_CHESTPLATE:
+    material: DIAMOND
+    amount: 1
+  DIAMOND_LEGGINGS:
+    material: DIAMOND
+    amount: 1
+  DIAMOND_BOOTS:
+    material: DIAMOND
+    amount: 1
+  DIAMOND_HORSE_ARMOUR:
+    material: DIAMOND
+    amount: 3
+  DIAMOND_PICKAXE:
+    material: DIAMOND
+    amount: 1
+  DIAMOND_AXE:
+    material: DIAMOND
+    amount: 1
+  DIAMOND_SHOVEL:
+    material: DIAMOND
+    amount: 1
+  DIAMOND_SWORD:
+    material: DIAMOND
+    amount: 1
+  DIAMOND_HOE:
+    material: DIAMOND
+    amount: 1
+
+  # Netherite Items:
+  NETHERITE_HELMET:
+    material: NETHERITE_INGOT
+    amount: 1
+  NETHERITE_CHESTPLATE:
+    material: NETHERITE_INGOT
+    amount: 1
+  NETHERITE_LEGGINGS:
+    material: NETHERITE_INGOT
+    amount: 1
+  NETHERITE_BOOTS:
+    material: NETHERITE_INGOT
+    amount: 1
+  NETHERITE_HORSE_ARMOUR:
+    material: NETHERITE_INGOT
+    amount: 3
+  NETHERITE_PICKAXE:
+    material: NETHERITE_INGOT
+    amount: 1
+  NETHERITE_AXE:
+    material: NETHERITE_INGOT
+    amount: 1
+  NETHERITE_SHOVEL:
+    material: NETHERITE_INGOT
+    amount: 1
+  NETHERITE_SWORD:
+    material: NETHERITE_INGOT
+    amount: 1
+  NETHERITE_HOE:
+    material: NETHERITE_INGOT
+    amount: 1
+
+  # Miscellaneous Items:
+  TRIDENT:
+    material: DIAMOND
+    amount: 4
+  SHIELD:
+    material: IRON_INGOT
+    amount: 1
+  BOW:
+    material: OAK_PLANKS
+    amount: 1
+  CROSSBOW:
+    material: OAK_PLANKS
+    amount: 2
+  FISHING_ROD:
+    material: STICK
+    amount: 1
+  ELYTRA:
+    material: DIAMOND
+    amount: 4
+  FLINT_AND_STEEL:
+    material: FLINT
+    amount: 1
+
+  # You can add any item that is damageable (has a damage bar) to this file.
+  #
+  # ITEM_NAME:
+  #   material: DIRT
+  #   amount: 1
+  #
+  # Custom Configuration Here:
+
+

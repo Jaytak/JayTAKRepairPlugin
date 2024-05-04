@@ -1,279 +1,114 @@
 package io.jaytak.jaytakrepairplugin;
+
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import static org.bukkit.Bukkit.getLogger;
 
-@SuppressWarnings({"unused"})
+import java.util.HashMap;
+import java.util.Map;
+
 public class Repair implements CommandExecutor {
-    @Override
-    public boolean onCommand(@NonNull CommandSender sender,
-                             @NonNull Command command,
-                             @NonNull String label,
-                             @SuppressWarnings("NullableProblems") String[] args) {
-        try{
-            // Check command jaytakrepair was run. This enables the possibility for future commands.
-            if (command.getName().equals("jaytakrepair")) {
-                // Check if the command sender is a player
-                if (!(sender instanceof Player)) {
-                    sender.sendMessage("[JayTAK Repair] Only players can use this command!");
-                    return false; // Command did not execute successfully.
-                }
+    private static final Map<String, RepairMaterial> repairMaterials = new HashMap<>();
+    private static JayTAKRepairPlugin plugin;
 
-                Player player = (Player) sender;
-                String username = player.getName();
-                getLogger().info("[JayTAK Repair] " + username + " issued the command " + command.getName());
-
-                // Check player has permission to use the command.
-                if (!player.hasPermission("jaytakrepairplugin.repair")){
-                    getLogger().info("[JayTAK Repair] " + sender.getName() + " doesnt have permission to run this command.");
-                    player.sendMessage("[JayTAK Repair] You dont have permission to run this command.");
-                    return false; // Command did not execute successfully.
-                }
-
-
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
-
-                try {
-                    // Check if the item is not air (an actual item is held)
-                    if (itemInHand.getType() != Material.AIR) {
-                        getLogger().info("[JayTAK Repair] User Holding: " + itemInHand.getType());
-                        String item = itemInHand.getType().toString();
-
-
-                        // Non damageable items, like anvils:
-                        if (item.equals("DAMAGED_ANVIL")){
-                            //ItemStack item = Material.IRON_BLOCK;
-                            //if (player.getInventory().contains((item)))
-                            if (player.getInventory().contains(Material.IRON_BLOCK)) {
-                                // Remove one item of the material from the player's inventory
-                                player.getInventory().removeItem(new ItemStack(Material.IRON_BLOCK, 1));
-                                // Repair Item.
-                                //player.setItemInHand(new ItemStack(Material.ANVIL, 1));
-                                player.getInventory().setItemInMainHand(new ItemStack(Material.ANVIL, 1));
-
-                                player.sendMessage("[JayTAK Repair] Item repaired using one Iron Block.");
-                                getLogger().info("[JayTAK Repair] Item repaired using one Iron Block.");
-                                // Update players inventory.
-                                //player.updateInventory();
-                                return true;  // Command executed successfully.
-                            }
-                            else {
-                                player.sendMessage("[JayTAK Repair] You don't have enough Iron Blocks to repair " + itemInHand.getType());
-                                getLogger().info("[JayTAK Repair] Player " + username + " doesnt have enough Iron Blocks to repair " + itemInHand.getType());
-                                return false; // Command did not execute successfully.
-                            }
-                        }
-                        else if (item.equals("CHIPPED_ANVIL")){
-                            if (player.getInventory().contains(Material.IRON_INGOT)){
-                                player.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
-                                player.getInventory().setItemInMainHand(new ItemStack(Material.ANVIL, 1));
-                                player.sendMessage("[JayTAK Repair] Item repaired using one Iron Ingot");
-                                getLogger().info("[JayTAK Repair] Item repaired using one Iron Ingot");
-                                return true;  // Command executed successfully.
-                            }
-                            else{
-                                player.sendMessage("[JayTAK Repair] You don't have enough Iron Ingots to repair " + itemInHand.getType());
-                                getLogger().info("[JayTAK Repair] Player " + username + " doesnt have enough Iron Ingots to repair " + itemInHand.getType());
-                                return false; // Command did not execute successfully.
-                            }
-                        }
-
-
-                        // Repairable/damageable Items:
-
-
-                        // Get items MetaData, then check if the MetaData is type Damageable.
-                        ItemMeta data = itemInHand.getItemMeta();
-                        if (data instanceof Damageable){
-                            Damageable damageable = (Damageable) data; // Cast data as Damageable
-                            int damageValue = damageable.getDamage(); // Store items current damage value
-                            getLogger().info("[JayTAK Repair] Item Damage Value Is: " + damageValue);
-                            if (damageValue > 0) { // If item has damage.
-                                getLogger().info("[JayTAK Repair] Attempting to repair item.");
-
-
-                                String[] parts = item.split("_");// Split the item name by _
-
-                                String itemMaterial = parts[0];
-
-                                switch(itemMaterial){
-                                    case "LEATHER":
-                                        // Check players inventory contains base material for item in hand.
-                                        if(player.getInventory().contains(Material.LEATHER)){
-                                            // Remove one item of the material from the player's inventory
-                                            player.getInventory().removeItem(new ItemStack(Material.LEATHER, 1));
-                                            // Repair Item.
-                                            ((Damageable) data).setDamage(0);
-                                            itemInHand.setItemMeta(data);
-                                            player.sendMessage("[JayTAK Repair] Item repaired using one Leather.");
-                                            getLogger().info("[JayTAK Repair] Item repaired using one Leather.");
-                                        }
-                                        else{
-                                            player.sendMessage("[JayTAK Repair] You don't have enough Leather to repair " + itemInHand.getType());
-                                            getLogger().info("[JayTAK Repair] Player " + username + "doesnt have enough Leather to repair " + itemInHand.getType());
-                                        }
-
-                                        // Items to repair using OAK_PLANKS
-                                    case "FISHING":
-                                    case "BOW":
-                                    case "CROSSBOW":
-                                    case "WOODEN":
-                                        // Check players inventory contains base material for item in hand.
-                                        if (player.getInventory().contains(Material.OAK_PLANKS)) {
-                                            // Remove one item of the material from the player's inventory
-                                            player.getInventory().removeItem(new ItemStack(Material.OAK_PLANKS, 1));
-                                            // Repair Item.
-                                            ((Damageable) data).setDamage(0);
-                                            itemInHand.setItemMeta(data);
-                                            player.sendMessage("[JayTAK Repair] Item repaired using one Oak Planks.");
-                                            getLogger().info("[JayTAK Repair] Item repaired using one Oak Planks.");
-                                        }
-                                        else {
-                                            player.sendMessage("[JayTAK Repair] You don't have enough Oak Planks to repair " + itemInHand.getType());
-                                            getLogger().info("[JayTAK Repair] Player " + username + " doesnt have enough Oak Planks to repair " + itemInHand.getType());
-                                        }
-                                        break;
-
-                                    // Items to repair using COBBLESTONE
-                                    case "STONE":
-                                        if (player.getInventory().contains(Material.COBBLESTONE)) {
-                                            // Remove one item of the material from the player's inventory
-                                            player.getInventory().removeItem(new ItemStack(Material.COBBLESTONE, 1));
-                                            // Repair Item.
-                                            ((Damageable) data).setDamage(0);
-                                            itemInHand.setItemMeta(data);
-                                            player.sendMessage("[JayTAK Repair] Item repaired using one Cobblestone.");
-                                            getLogger().info("[JayTAK Repair] Item repaired using one Oak Cobblestone.");
-                                        }
-                                        else {
-                                            player.sendMessage("[JayTAK Repair] You don't have enough Cobblestone to repair " + itemInHand.getType());
-                                            getLogger().info("[JayTAK Repair] Player " + username + " doesnt have enough Cobblestone to repair " + itemInHand.getType());
-                                        }
-                                        break;
-
-                                    // Items to repair using IRON_INGOTS
-                                    case "SHIELD":
-                                    case "IRON":
-                                        if (player.getInventory().contains(Material.IRON_INGOT)) {
-                                            // Remove one item of the material from the player's inventory
-                                            player.getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 1));
-                                            // Repair Item.
-                                            ((Damageable) data).setDamage(0);
-                                            itemInHand.setItemMeta(data);
-                                            player.sendMessage("[JayTAK Repair] Item repaired using one Iron Ingot.");
-                                            getLogger().info("[JayTAK Repair] Item repaired using one Iron Ingot.");
-                                        }
-                                        else {
-                                            player.sendMessage("[JayTAK Repair] You don't have enough Iron Ingots to repair " + itemInHand.getType());
-                                            getLogger().info("[JayTAK Repair] Player " + username + " doesnt have enough Iron Ingots to repair " + itemInHand.getType());
-                                        }
-                                        break;
-
-                                    // Items to repair using GOLD_INGOTS
-                                    case "GOLD":
-                                        if (player.getInventory().contains(Material.GOLD_INGOT)) {
-                                            // Remove one item of the material from the player's inventory
-                                            player.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 1));
-                                            // Repair Item.
-                                            ((Damageable) data).setDamage(0);
-                                            itemInHand.setItemMeta(data);
-                                            player.sendMessage("[JayTAK Repair] Item repaired using one Gold Ingot.");
-                                            getLogger().info("[JayTAK Repair] Item repaired using one Gold Ingot.");
-                                        }
-                                        else {
-                                            player.sendMessage("[JayTAK Repair] You don't have enough Gold Ingots to repair " + itemInHand.getType());
-                                            getLogger().info("[JayTAK Repair] Player " + username + " doesnt have enough Gold Ingots to repair " + itemInHand.getType());
-                                        }
-                                        break;
-
-                                    // Items to repair using DIAMONDS
-                                    case "DIAMOND":
-                                        if (player.getInventory().contains(Material.DIAMOND)) {
-                                            // Remove one item of the material from the player's inventory
-                                            player.getInventory().removeItem(new ItemStack(Material.DIAMOND, 1));
-                                            // Repair Item.
-                                            ((Damageable) data).setDamage(0);
-                                            itemInHand.setItemMeta(data);
-                                            player.sendMessage("[JayTAK Repair] Item repaired using one Diamond.");
-                                            getLogger().info("[JayTAK Repair] Item repaired using one Diamond.");
-                                        }
-                                        else {
-                                            player.sendMessage("[JayTAK Repair] You don't have enough Diamonds to repair " + itemInHand.getType());
-                                            getLogger().info("[JayTAK Repair] Player " + username + " doesnt have enough Diamonds to repair " + itemInHand.getType());
-                                        }
-                                        break;
-
-                                    // Items to repair using NETHERITE_INGOTS
-                                    case "TRIDENT":
-                                    case "ELYTRA":
-                                    case "NETHERITE":
-                                        if (player.getInventory().contains(Material.NETHERITE_INGOT)) {
-                                            // Remove one item of the material from the player's inventory
-                                            player.getInventory().removeItem(new ItemStack(Material.NETHERITE_INGOT, 1));
-                                            // Repair Item.
-                                            ((Damageable) data).setDamage(0);
-                                            itemInHand.setItemMeta(data);
-                                            player.sendMessage("[JayTAK Repair] Item repaired using one Netherite Ingot.");
-                                            getLogger().info("[JayTAK Repair] Item repaired using one Netherite Ingot.");
-                                        }
-                                        else {
-                                            player.sendMessage("[JayTAK Repair] You don't have enough Netherite Ingots to repair " + itemInHand.getType());
-                                            getLogger().info("[JayTAK Repair] Player " + username + " doesnt have enough Netherite to repair " + itemInHand.getType());
-                                        }
-                                        break;
-
-                                    // Any Other Item.
-                                    default:
-                                        player.sendMessage("[JayTAK Repair] Item " + itemMaterial + " currently not supported by the plugin, poke JayTAK...");
-                                        getLogger().info("[JayTAK Repair] Item " + itemMaterial + " currently not supported by the plugin, poke JayTAK...");
-                                        break;
-                                }
-
-                                // Update players inventory.
-                                //player.updateInventory();
-                            }
-                            // Item does not have any damage.
-                            else{
-                                player.sendMessage("[JayTAK Repair] Item " + itemInHand.getType() + " does not need repairing!");
-                                getLogger().info("[JayTAK Repair] Item " + itemInHand.getType() + " does not need repairing!");
-                            }
-                        }
-                        // Item does not have any metaData.
-                        else{
-                            player.sendMessage("[JayTAK Repair] Item does not have metadata!");
-                            getLogger().info("[JayTAK Repair] Item does not have MetaData!");
-                        }
+    public Repair(JayTAKRepairPlugin plugin){
+        Repair.plugin = plugin;
+    }
+    public static void loadRepairMaterials(FileConfiguration config) {
+        repairMaterials.clear();
+        ConfigurationSection repairMaterialsSection = config.getConfigurationSection("repairMaterials");
+        if (repairMaterialsSection != null) {
+            for (String key : repairMaterialsSection.getKeys(false)) {
+                ConfigurationSection repairMaterialSection = repairMaterialsSection.getConfigurationSection(key);
+                if (repairMaterialSection != null) {
+                    String materialName = repairMaterialSection.getString("material");
+                    int amount = repairMaterialSection.getInt("amount", 1);
+                    try {
+                        Material material = Material.valueOf(materialName);
+                        repairMaterials.put(key, new RepairMaterial(material, amount));
+                    } catch (IllegalArgumentException e) {
+                        plugin.getLogger().warning("[JayTAK Repair] config.yml error! Invalid material specified for key: " + key);
+                        plugin.getLogger().info("[JayTAK Repair] will attempt to continue to load the remaining configuration.");
                     }
-                    // Player not holding an item in their hand.
-                    else {
-                        player.sendMessage("[JayTAK Repair] You need to hold an item in your hand to use this command.");
-                        getLogger().info("[JayTAK Repair]  Player " + username + " doesnt have an item in their hand.");
-                    }
-                    return true; // Command executed successfully.
-                }
-                // Caught Exception
-                catch (Exception exception){
-                    player.sendMessage("[JayTAK Repair] Caught an Exception, contact an admin to check the logs.");
-                    getLogger().info("[JayTAK Repair] Caught Exception: " + exception);
-                    //exception.printStackTrace();
                 }
             }
         }
-        catch (Exception exception){
-            getLogger().info("[JayTAK Repair] Caught Exception: " + exception);
-        }
-        return false; // Command did not execute successfully.
     }
 
-    public boolean repairer(Object obj) {
+    @Override
+    public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command, @NonNull String label, @SuppressWarnings("NullableProblems") String[] args) {
 
-        return false;
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("[JayTAK Repair] Only players can use this command!");
+            return true;
+        }
+        Player player = (Player) sender;
+        if (!player.hasPermission("jaytakrepairplugin.repair")) {
+            playerPrint(player, "You don't have permission to run this command.");
+            return true;
+        }
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        if (itemInHand.getType() == Material.AIR) {
+            playerPrint(player, "You need to hold an item in your hand to use this command.");
+            return true;
+        }
+        String itemType = itemInHand.getType().toString();
+        if (repairMaterials.containsKey(itemType)) {
+            RepairMaterial repairMaterial = repairMaterials.get(itemType);
+            Material material = repairMaterial.getMaterial();
+            int amountRequired = repairMaterial.getAmount();
+
+            if (player.getInventory().contains(material, amountRequired)) {
+                player.getInventory().removeItem(new ItemStack(material, amountRequired));
+                if (itemType.equals("DAMAGED_ANVIL") || itemType.equals("CHIPPED_ANVIL")) {
+                    player.getInventory().setItemInMainHand(new ItemStack(Material.ANVIL, 1));
+                } else {
+                    boolean repairOK = repairItem(player, itemInHand);
+                    if (!repairOK){
+                        player.getInventory().addItem(new ItemStack(material, amountRequired));
+                    }
+                }
+                return true;
+            } else {
+                playerPrint(player, "You need " + amountRequired + " " + cleanOutput(material.name()) + " to repair " + cleanOutput(itemType));
+                return true;
+            }
+        } else {
+            playerPrint(player, "Item " + cleanOutput(itemType) + " is not supported for repair.");
+            return true;
+        }
+    }
+    private boolean repairItem(Player player, ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta instanceof Damageable) {
+            Damageable damageable = (Damageable) meta;
+            if (damageable.getDamage() > 0) {
+                damageable.setDamage(0);
+                item.setItemMeta(meta);
+                playerPrint(player, cleanOutput(item.getType().toString()) + " repaired successfully.");
+                return true;
+            } else {
+                playerPrint(player, "This " + cleanOutput(item.getType().toString()) + " does not need repairing.");
+                return false;
+            }
+        } else {
+            playerPrint(player, cleanOutput(item.getType().toString()) + " cannot be repaired.");
+            return false;
+        }
+    }
+    public static String cleanOutput(String input){
+        String temp = input.toLowerCase().replace("_", " ");
+        return temp.substring(0, 1).toUpperCase() + temp.substring(1);
+    }
+    public void playerPrint(Player player, String input){
+        player.sendMessage("[JayTAK Repair] " + input);
     }
 }
