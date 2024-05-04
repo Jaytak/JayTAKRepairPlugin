@@ -166,7 +166,7 @@ repairMaterials:
     amount: 1
   NETHERITE_HOE:
     material: NETHERITE_INGOT
-    amount:
+    amount: 1
 
   # Miscellaneous Items:
   TRIDENT:
