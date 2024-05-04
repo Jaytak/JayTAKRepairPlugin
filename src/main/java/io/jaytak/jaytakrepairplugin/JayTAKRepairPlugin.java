@@ -9,20 +9,19 @@ public final class JayTAKRepairPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         int pluginId = 20963;
+        @SuppressWarnings("unused")
         metrics metrics = new metrics(this, pluginId);
         configLoad();
         super.onEnable();
         Objects.requireNonNull(getCommand("jaytakrepair")).setExecutor(new Repair(this));
-        this.getLogger().info("JayTAK Repair Plugin Loaded");
+        this.getLogger().info("[JayTAK Repair] Plugin Loaded");
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
         super.onDisable();
-        this.getLogger().info("JayTAK Repair Plugin Exiting");
+        this.getLogger().info("[JayTAK Repair] Plugin Exiting");
     }
 
     private void configLoad() {

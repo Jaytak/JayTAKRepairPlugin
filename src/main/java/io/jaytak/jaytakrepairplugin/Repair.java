@@ -30,12 +30,12 @@ public class Repair implements CommandExecutor {
                 ConfigurationSection repairMaterialSection = repairMaterialsSection.getConfigurationSection(key);
                 if (repairMaterialSection != null) {
                     String materialName = repairMaterialSection.getString("material");
-                    int amount = repairMaterialSection.getInt("amount", 1); // Default amount is 1
+                    int amount = repairMaterialSection.getInt("amount", 1);
                     try {
                         Material material = Material.valueOf(materialName);
                         repairMaterials.put(key, new RepairMaterial(material, amount));
                     } catch (IllegalArgumentException e) {
-                        plugin.getLogger().warning("Invalid material specified for key: " + key);
+                        plugin.getLogger().warning("[JayTAK Repair] config.yml error! Invalid material specified for key: " + key);
                     }
                 }
             }
@@ -43,30 +43,22 @@ public class Repair implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NonNull CommandSender sender,
-                             @NonNull Command command,
-                             @NonNull String label,
-                             @SuppressWarnings("NullableProblems") String[] args) {
+    public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command, @NonNull String label, @SuppressWarnings("NullableProblems") String[] args) {
 
         if (!(sender instanceof Player)) {
             sender.sendMessage("[JayTAK Repair] Only players can use this command!");
             return true;
         }
-
         Player player = (Player) sender;
-        String username = player.getName();
-
         if (!player.hasPermission("jaytakrepairplugin.repair")) {
-            player.sendMessage("[JayTAK Repair] You don't have permission to run this command.");
+            playerPrint(player, "You don't have permission to run this command.");
             return true;
         }
-
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (itemInHand.getType() == Material.AIR) {
-            player.sendMessage("[JayTAK Repair] You need to hold an item in your hand to use this command.");
+            playerPrint(player, "You need to hold an item in your hand to use this command.");
             return true;
         }
-
         String itemType = itemInHand.getType().toString();
         if (repairMaterials.containsKey(itemType)) {
             RepairMaterial repairMaterial = repairMaterials.get(itemType);
@@ -82,15 +74,14 @@ public class Repair implements CommandExecutor {
                 }
                 return true;
             } else {
-                player.sendMessage("[JayTAK Repair] You need " + amountRequired + " " + material.name() + " to repair " + itemType);
+                playerPrint(player, "You need " + amountRequired + " " + cleanOutput(material.name()) + " to repair " + cleanOutput(itemType));
                 return true;
             }
         } else {
-            player.sendMessage("[JayTAK Repair] Item " + itemType + " is not supported for repair.");
+            playerPrint(player, "Item " + cleanOutput(itemType) + " is not supported for repair.");
             return true;
         }
     }
-
     private void repairItem(Player player, ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if (meta instanceof Damageable) {
@@ -98,12 +89,18 @@ public class Repair implements CommandExecutor {
             if (damageable.getDamage() > 0) {
                 damageable.setDamage(0);
                 item.setItemMeta(meta);
-                player.sendMessage("[JayTAK Repair] Item repaired successfully.");
+                playerPrint(player, "Item repaired successfully.");
             } else {
-                player.sendMessage("[JayTAK Repair] Item does not need repairing.");
+                playerPrint(player, "Item does not need repairing.");
             }
         } else {
-            player.sendMessage("[JayTAK Repair] Item cannot be repaired.");
+            playerPrint(player, "Item cannot be repaired.");
         }
+    }
+    public static String cleanOutput(String input){
+        return input.toLowerCase().replace("_", " ");
+    }
+    public void playerPrint(Player player, String input){
+        player.sendMessage("[JayTAK Repair] " + input);
     }
 }
