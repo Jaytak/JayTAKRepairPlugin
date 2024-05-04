@@ -16,20 +16,40 @@ public final class JayTAKRepairPlugin extends JavaPlugin {
     public static FileConfiguration config;
     private File configFile;
 
+    @Override
+    public void onEnable() {
+        // Plugin startup logic
+        int pluginId = 20963;
+        metrics metrics = new metrics(this, pluginId);
+        configLoad();
+        super.onEnable();
+        Objects.requireNonNull(getCommand("jaytakrepair")).setExecutor(new Repair());
+        this.getLogger().info("JayTAK Repair Plugin Loaded");
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        super.onDisable();
+        this.getLogger().info("JayTAK Repair Plugin Exiting");
+    }
+
     private void loadRepairMaterials() {
         repairMaterials.clear();
         for (String key : config.getKeys(false)) {
-            try {
-                Material material = Material.valueOf(config.getString(key));
-                repairMaterials.put(key, material);
-            } catch (IllegalArgumentException e) {
-                Logger logger = Logger.getLogger("Minecraft");
-                logger.warning("Invalid material specified for key: " + key);
+            if (!Objects.equals(key, "repairMaterials")){
+                try {
+                    Material material = Material.valueOf(config.getString(key));
+                    repairMaterials.put(key, material);
+                } catch (IllegalArgumentException e) {
+                    Logger logger = Logger.getLogger("Minecraft");
+                    logger.warning("Invalid material specified for key: " + key);
+                }
             }
         }
     }
 
-    private void ConfigLoad(){
+    private void configLoad(){
         configFile = new File("plugins/JayTAKRepair/config.yml");
         boolean fileCreated = false;
         if (!configFile.exists()) {
@@ -60,23 +80,5 @@ public final class JayTAKRepairPlugin extends JavaPlugin {
         config.addDefault("repairMaterials.DIAMOND_PICKAXE", Material.DIAMOND.name());
 
         config.save(configFile);
-    }
-
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
-        int pluginId = 20963;
-        metrics metrics = new metrics(this, pluginId);
-        ConfigLoad();
-        super.onEnable();
-        Objects.requireNonNull(getCommand("jaytakrepair")).setExecutor(new Repair());
-        this.getLogger().info("JayTAK Repair Plugin Loaded");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-        super.onDisable();
-        this.getLogger().info("JayTAK Repair Plugin Exiting");
     }
 }
