@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,22 +14,30 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class Repair implements CommandExecutor {
+    private static final Map<String, RepairMaterial> repairMaterials = new HashMap<>();
+    private static JayTAKRepairPlugin plugin;
 
-    private final Map<String, Material> repairMaterials = new HashMap<>();
-    Logger logger = Logger.getLogger("Minecraft");
-
-    public void loadRepairMaterials(FileConfiguration config) {
+    public Repair(JayTAKRepairPlugin plugin){
+        Repair.plugin = plugin;
+    }
+    public static void loadRepairMaterials(FileConfiguration config) {
         repairMaterials.clear();
-        for (String key : config.getConfigurationSection("repairMaterials").getKeys(false)) {
-            String materialName = config.getString("repairMaterials." + key);
-            try {
-                Material material = Material.valueOf(materialName);
-                repairMaterials.put(key, material);
-            } catch (IllegalArgumentException e) {
-                logger.warning("Invalid material specified for key: " + key);
+        ConfigurationSection repairMaterialsSection = config.getConfigurationSection("repairMaterials");
+        if (repairMaterialsSection != null) {
+            for (String key : repairMaterialsSection.getKeys(false)) {
+                ConfigurationSection repairMaterialSection = repairMaterialsSection.getConfigurationSection(key);
+                if (repairMaterialSection != null) {
+                    String materialName = repairMaterialSection.getString("material");
+                    int amount = repairMaterialSection.getInt("amount", 1); // Default amount is 1
+                    try {
+                        Material material = Material.valueOf(materialName);
+                        repairMaterials.put(key, new RepairMaterial(material, amount));
+                    } catch (IllegalArgumentException e) {
+                        plugin.getLogger().warning("Invalid material specified for key: " + key);
+                    }
+                }
             }
         }
     }
@@ -38,49 +47,47 @@ public class Repair implements CommandExecutor {
                              @NonNull Command command,
                              @NonNull String label,
                              @SuppressWarnings("NullableProblems") String[] args) {
+
         if (!(sender instanceof Player)) {
             sender.sendMessage("[JayTAK Repair] Only players can use this command!");
-            return false;
+            return true;
         }
 
         Player player = (Player) sender;
         String username = player.getName();
-        //Logger logger = Logger.getLogger("Minecraft");
 
         if (!player.hasPermission("jaytakrepairplugin.repair")) {
             player.sendMessage("[JayTAK Repair] You don't have permission to run this command.");
-            return false;
+            return true;
         }
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (itemInHand.getType() == Material.AIR) {
             player.sendMessage("[JayTAK Repair] You need to hold an item in your hand to use this command.");
-            return false;
+            return true;
         }
-
-
-        loadRepairMaterials(JayTAKRepairPlugin.config);
-
 
         String itemType = itemInHand.getType().toString();
         if (repairMaterials.containsKey(itemType)) {
-            Material repairMaterial = repairMaterials.get(itemType);
-            if (player.getInventory().contains(repairMaterial)) {
-                player.getInventory().removeItem(new ItemStack(repairMaterial, 1));
-                if (itemType.equals("DAMAGED_ANVIL") || itemType.equals("CHIPPED_ANVIL")){
+            RepairMaterial repairMaterial = repairMaterials.get(itemType);
+            Material material = repairMaterial.getMaterial();
+            int amountRequired = repairMaterial.getAmount();
+
+            if (player.getInventory().contains(material, amountRequired)) {
+                player.getInventory().removeItem(new ItemStack(material, amountRequired));
+                if (itemType.equals("DAMAGED_ANVIL") || itemType.equals("CHIPPED_ANVIL")) {
                     player.getInventory().setItemInMainHand(new ItemStack(Material.ANVIL, 1));
-                }else{
+                } else {
                     repairItem(player, itemInHand);
                 }
                 return true;
             } else {
-                player.sendMessage("[JayTAK Repair] You don't have enough " + repairMaterial.name() + " to repair " + itemType);
-                return false;
+                player.sendMessage("[JayTAK Repair] You need " + amountRequired + " " + material.name() + " to repair " + itemType);
+                return true;
             }
-        }
-        else {
+        } else {
             player.sendMessage("[JayTAK Repair] Item " + itemType + " is not supported for repair.");
-            return false;
+            return true;
         }
     }
 
