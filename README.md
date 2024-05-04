@@ -248,6 +248,3 @@ You can alter the default repair items and amounts in the config.yml:
 
 ![Plugin bStats](https://bstats.org/signatures/bukkit/JayTAK%20Repair%20Plugin.svg)
 
-
-I'll get around to implementing DRY. For now it works, ship it.
-
