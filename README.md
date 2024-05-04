@@ -202,7 +202,7 @@ You can alter the default repair items and amounts in the config.yml:
             amount: 1
         NETHERITE_HOE:
             material: NETHERITE_INGOT
-            amount:
+            amount: 1
         
         # Miscellaneous Items:
         TRIDENT:
