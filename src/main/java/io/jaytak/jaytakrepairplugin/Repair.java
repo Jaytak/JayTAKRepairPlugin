@@ -71,7 +71,10 @@ public class Repair implements CommandExecutor {
                 if (itemType.equals("DAMAGED_ANVIL") || itemType.equals("CHIPPED_ANVIL")) {
                     player.getInventory().setItemInMainHand(new ItemStack(Material.ANVIL, 1));
                 } else {
-                    repairItem(player, itemInHand);
+                    boolean repairOK = repairItem(player, itemInHand);
+                    if (!repairOK){
+                        player.getInventory().addItem(new ItemStack(material, amountRequired));
+                    }
                 }
                 return true;
             } else {
@@ -83,23 +86,27 @@ public class Repair implements CommandExecutor {
             return true;
         }
     }
-    private void repairItem(Player player, ItemStack item) {
+    private boolean repairItem(Player player, ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if (meta instanceof Damageable) {
             Damageable damageable = (Damageable) meta;
             if (damageable.getDamage() > 0) {
                 damageable.setDamage(0);
                 item.setItemMeta(meta);
-                playerPrint(player, "Item repaired successfully.");
+                playerPrint(player, cleanOutput(item.getType().toString()) + " repaired successfully.");
+                return true;
             } else {
-                playerPrint(player, "Item does not need repairing.");
+                playerPrint(player, "This " + cleanOutput(item.getType().toString()) + " does not need repairing.");
+                return false;
             }
         } else {
-            playerPrint(player, "Item cannot be repaired.");
+            playerPrint(player, cleanOutput(item.getType().toString()) + " cannot be repaired.");
+            return false;
         }
     }
     public static String cleanOutput(String input){
-        return input.toLowerCase().replace("_", " ");
+        String temp = input.toLowerCase().replace("_", " ");
+        return temp.substring(0, 1).toUpperCase() + temp.substring(1);
     }
     public void playerPrint(Player player, String input){
         player.sendMessage("[JayTAK Repair] " + input);
