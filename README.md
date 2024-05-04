@@ -1,7 +1,7 @@
 # JayTAK Repair Plugin
 <img src="https://cdn.modrinth.com/data/KNFBnUnH/66c81bb00e229dbfd771601b53e5f29bfc12f7b7.png" alt="plugin icon" width="150">
 
-Version 2.0.3 (for paper 1.20.4)
+Version 2.0.4 (for paper 1.20.4)
 
 V2.0.0 brings a config.yml so server admins can customise the plugins repair costs.
 <br><br>
