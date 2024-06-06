@@ -1,7 +1,7 @@
 # JayTAK Repair Plugin
 <img src="https://cdn.modrinth.com/data/KNFBnUnH/66c81bb00e229dbfd771601b53e5f29bfc12f7b7.png" alt="plugin icon" width="150">
 
-Version 2.0.4 (for paper 1.20.4)
+Version 2.0.4 (for paper 1.20.X)
 
 V2.0.0 brings a config.yml so server admins can customise the plugins repair costs.
 <br><br>
@@ -237,12 +237,6 @@ You can alter the default repair items and amounts in the config.yml:
 
 
 </details>
-
-
-> [!WARNING]
-> This plugin has only been tested on 1.20.4 Paper builds 407, 409, 422, 423, 434, 496<br>
-> I am unable to guarantee this plugin will work on any other Minecraft server builds.
-
 
 ### bStats
 
